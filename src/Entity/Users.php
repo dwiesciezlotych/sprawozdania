@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Users
@@ -12,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity
  * @UniqueEntity(fields={"login"}, message="There is already an account with this login")
  */
-class Users
+class Users implements UserInterface 
 {
     /**
      * @var int
@@ -224,5 +225,20 @@ class Users
         return $this;
     }
 
+    public function eraseCredentials() {
+        
+    }
+
+    public function getPassword() {
+        return $this->passwordHash;
+    }
+
+    public function getRoles(): array{//\Symfony\Component\Security\Core\User\string[]{
+        return array($this->role);
+    }
+
+    public function getUsername(): string {
+        return $this->login;
+    }
 
 }
