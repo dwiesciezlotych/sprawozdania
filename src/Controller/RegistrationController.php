@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $user->setSalt(md5(time()));
             $user->setStatus($this->getDoctrine()->getManager()->find(\App\Entity\Statuses::class,3)); //change password request
-            $user->setRole($this->getDoctrine()->getManager()->find(\App\Entity\Roles::class, 1));
+            //$user->setRole($this->getDoctrine()->getManager()->find(\App\Entity\Roles::class, 1));
             $user->setPasswordHash(
                 $passwordEncoder->encodePassword(
                     $user,
