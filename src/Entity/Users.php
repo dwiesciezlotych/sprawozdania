@@ -233,8 +233,13 @@ class Users implements UserInterface
         return $this->passwordHash;
     }
 
-    public function getRoles(): array{//\Symfony\Component\Security\Core\User\string[]{
-        return array($this->role);
+    public function getRoles(): array {
+        //return array($this->role);
+        $roles = array($this->role->getName());
+        // guarantee every user at least has ROLE_USER
+        //$roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     public function getUsername(): string {
