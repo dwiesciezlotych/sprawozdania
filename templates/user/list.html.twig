@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista użytkowników{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<h1>Lista użytkowników</h1>       
+<table>
+    <thead>
+        <td>imie</td>
+        <td>nazwisko</td>
+        <td>{#edycja#}</td>
+    </thead><tbody>
+{% for row in pagination %} 
+    <tr><td>{{ row.name }}</td><td>{{ row.surname }}</td><td><a href="{{ app.request.get('app_user_add') }}">edycja</a></td></tr> 
+{% endfor %} 
+</tbody></table>
+
+<div class="navigation"> 
+{{ knp_pagination_render(pagination) }} 
+</div> 
+
+{% endblock %}
