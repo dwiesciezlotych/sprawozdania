@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodawanie kursu{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Dodawanie kursu</h1>
+
+    {{ form_start(courseAddForm) }}
+        {{ form_row(courseAddForm.name) }}
+        {{ form_row(courseAddForm.description) }}
+        {{ form_row(courseAddForm.password) }}
+        {{ form_row(courseAddForm.category) }}
+
+        <button type="submit" class="btn">Zapisz</button>
+    {{ form_end(courseAddForm) }}
+{% endblock %}

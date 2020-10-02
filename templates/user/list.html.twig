@@ -15,12 +15,14 @@
         <td>{#edycja#}</td>
     </thead><tbody>
 {% for row in pagination %} 
-    <tr><td>{{ row.name }}</td><td>{{ row.surname }}</td><td><a href="{{ app.request.get('app_user_add') }}">edycja</a></td></tr> 
+    <tr><td>{{ row.name }}</td><td>{{ row.surname }}</td><td><a href="{{ path('app_user_edit', { 'uid': row.id }) }}">edycja</a></td></tr> 
 {% endfor %} 
 </tbody></table>
 
 <div class="navigation"> 
 {{ knp_pagination_render(pagination) }} 
 </div> 
+
+<a href="{{ path('app_user_add') }}">Dodaj</a>
 
 {% endblock %}

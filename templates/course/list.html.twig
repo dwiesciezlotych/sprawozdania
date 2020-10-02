@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista kursów{% endblock %}
+
+{% block body %}
+<script>
+    // rozwija/zwija listę kursów w kategorii o podanym id
+    function courseVisible(id) {
+      var x = document.getElementById("categoryCourse_"+id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    };
+</script>
+    
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<h1>Lista kursów</h1>   
+
+{# 1 sposob #}
+{#{% for row in pagination %} 
+    {% if row.courses is defined %}
+        <div style="color: red;">{{ row.name }} <input type="button" value="\/" onclick="courseVisible( {{ row.id }} );" /></div>
+        <div id="categoryCourse_{{ row.id }}" style="display: none">
+        {% for course in row.courses %}
+            <a href="{{ path('app_course_show', { 'cid': course.id }) }}"><div style="color: blue;">{{ course.name }}</div></a>
+        {% endfor %}
+        </div>
+    {% else %}
+        <a href="{{ path('app_course_show', { 'cid': row.id }) }}"><div style="color: blue;">{{ row.name }}</div></a>
+    {% endif %}
+{% endfor %} #}
+
+{# 2 sposob #}
+{% for row in pagination %} 
+    <div style="color: red;">{{ row.name }} <input type="button" value="\/" onclick="courseVisible( {{ row.id }} );" /></div>
+    <div id="categoryCourse_{{ row.id }}" style="display: none">
+    {% for course in row.courses %}
+        <a href="{{ path('app_course_show', { 'cid': course.id }) }}"><div style="color: blue;">{{ course.name }}</div></a>
+    {% endfor %}
+    </div>
+{% endfor %} 
+
+<div class="navigation"> 
+{{ knp_pagination_render(pagination) }} 
+</div> 
+
+
+{% endblock %}

@@ -13,15 +13,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
+    private $resultOnListPageCount = 20; // liczba wynikow na stronie
+    
     /**
      * @Route("/user/list", name="app_user_list")
      */
-    public function list(PaginatorInterface $paginator, Request $request)
+    public function list(Request $request, PaginatorInterface $paginator)
     {
         $repository = $this->getDoctrine()->getRepository(Users::class); 
         return $this->render('user/list.html.twig', [
             'pagination' => $paginator->paginate(
-             $repository->findAll(),$request->query->getInt('page', 1),10),
+             $repository->findAll(),$request->query->getInt('page', 1), $this->resultOnListPageCount),
             // (lista, numer strony, liczba wynikow na stronie)
         ]);
     }
@@ -60,5 +62,28 @@ class UserController extends AbstractController
         ]);
     }
     
-    
+    /**
+     * @Route("/user/edit", name="app_user_edit")
+     */
+    public function edit(Request $request)
+    {
+        $user = $this->getDoctrine()->getManager()->find(Users::class,$request->query->getInt('uid', -1));
+        if($user == null) return $this->redirectToRoute('app_user_list');
+        
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('app_user_list');
+        }
+
+        return $this->render('user/add.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
 }

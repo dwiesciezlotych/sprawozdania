@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodawanie sekcji{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Dodawanie sekcji</h1>
+
+    {{ form_start(sectionAddForm) }}
+        {{ form_row(sectionAddForm.name) }}
+
+        <button type="submit" class="btn">Zapisz</button>
+    {{ form_end(sectionAddForm) }}
+{% endblock %}

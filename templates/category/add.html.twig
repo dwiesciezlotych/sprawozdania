@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodawanie kategorii{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Dodawanie kategorii</h1>
+
+    {{ form_start(categoryAddForm) }}
+        {{ form_row(categoryAddForm.name) }}
+
+        <button type="submit" class="btn">Zapisz</button>
+    {{ form_end(categoryAddForm) }}
+{% endblock %}

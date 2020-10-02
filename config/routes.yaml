@@ -4,5 +4,5 @@
 
 app_main_page:
     path: /
-    controller: App\Controller\DefaultController::index
+    controller: App\Controller\CourseController::list
 

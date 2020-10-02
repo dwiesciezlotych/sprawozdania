@@ -45,7 +45,7 @@ class Courses
     /**
      * @var \Categories
      *
-     * @ORM\ManyToOne(targetEntity="Categories")
+     * @ORM\ManyToOne(targetEntity="Categories", inversedBy="courses")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
