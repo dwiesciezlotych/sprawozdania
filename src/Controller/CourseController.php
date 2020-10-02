@@ -72,12 +72,26 @@ class CourseController extends AbstractController
         $course = $this->getDoctrine()->getManager()->find(Courses::class,$request->query->getInt('cid', -1));
         if($course == null) return $this->redirectToRoute('app_course_list');
 
-        $target = $this->getDoctrine()->getRepository(Sections::class)->findBy(["course" => $course]);
+        //$target = $this->getDoctrine()->getRepository(Sections::class)->findBy(["course" => $course]);
+        $target = $this->getDoctrine()->getRepository(Sections::class)->findAllByCourse($course->getId());
+        dd($target);
+//        WITH RECURSIVE sub_tree AS (
+//  SELECT *
+//  FROM sections
+//  WHERE previous_section_id is null
+//    	and course_id = 2
+//
+//  UNION ALL
+//
+//  SELECT sec.*
+//  FROM sections sec, sub_tree st
+//  WHERE sec.previous_section_id = st.id
+//)
+//SELECT id, name, course_id, previous_section_id FROM sub_tree
         
         return $this->render('course/show.html.twig', [
             'course' => $course,
             'pagination' => $paginator->paginate(
-                    
              $target, $request->query->getInt('page', 1), $this->resultOnListPageCount),
             // (lista, numer strony, liczba wynikow na stronie)
         ]);
@@ -95,7 +109,7 @@ class CourseController extends AbstractController
         $form = $this->createFormBuilder($section)
             ->add('name', TextType::class)
             ->getForm();
-        ;
+        
         $section->setCourse($course);
         $section->setPreviousSection(null);
         
