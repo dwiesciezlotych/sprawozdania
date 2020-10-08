@@ -24,7 +24,7 @@
     <div style="color: red;">{{ row.name }} 
         <select onchange="location = this.value;">
             <option value="" disabled selected hidden>Dodaj</option>
-            <option value="{#{{ path('app_task_add',{ 'cid': course.id }) }}#}">Skrzynkę</option>
+            <option value="{{ path('app_task_add',{ 'sid': row.id }) }}">Skrzynkę</option>
             <option value="{#{{ path('app_material_add',{ 'cid': course.id }) }}#}">Materiały</option>
         </select>
     </div>
