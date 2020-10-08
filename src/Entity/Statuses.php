@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Statuses
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_DISABLED = 'disabled';
+    const STATUS_CHANGE_PASSWORD_REQUEST = 'change_password_request';
+    const STATUS_RESET_PASSWORD_REQUEST = 'reset_password_request';
+    
     /**
      * @var int
      *

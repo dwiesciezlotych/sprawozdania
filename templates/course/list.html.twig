@@ -3,17 +3,6 @@
 {% block title %}Lista kursów{% endblock %}
 
 {% block body %}
-<script>
-    // rozwija/zwija listę kursów w kategorii o podanym id
-    function courseVisible(id) {
-      var x = document.getElementById("categoryCourse_"+id);
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    };
-</script>
     
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -50,4 +39,18 @@
 </div> 
 
 
+{% endblock %}
+{% block javascripts %}
+    <script>
+    // rozwija/zwija listę kursów w kategorii o podanym id
+    function courseVisible(id) {
+      var x = document.getElementById("categoryCourse_"+id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    };
+    </script>
+    {{ parent() }}
 {% endblock %}

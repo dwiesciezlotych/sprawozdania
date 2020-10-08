@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class RegistrationFormType extends AbstractType
+class UserEditFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -38,8 +38,6 @@ class RegistrationFormType extends AbstractType
                     'label' => 'Rola'])
             ->add('birth_date', BirthdayType::class, 
                     ['label' => 'Data urodzenia'])
-            ->add('password_hash', TextType::class, 
-                    ['label' => 'Hasło'])
 //            ->add('agreeTerms', CheckboxType::class, [
 //                'mapped' => false,
 //                'constraints' => [

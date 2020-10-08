@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Dodawanie użytkownika{% endblock %}
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <h1>Dodawanie użytkownika</h1>
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.name) }}
@@ -17,9 +17,26 @@
         {{ form_row(registrationForm.telephone) }}
         {{ form_row(registrationForm.role) }}
         {{ form_row(registrationForm.birth_date) }}
+        {{ form_row(registrationForm.password_hash) }}
+        <input type="checkbox" onclick="passworVisibility()" id="password_visibility">
+        <label for="password_visibility">Pokaż hasło</label>
         {#{{ form_row(registrationForm.plainPassword) }}#}
         {#{{ form_row(registrationForm.agreeTerms) }}#}
 
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
+{% endblock %}
+{% block javascripts %}
+    <script>
+    document.getElementById("registration_form_password_hash").type = "password";
+    function passworVisibility() {
+        var x = document.getElementById("registration_form_password_hash");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+    </script>
+    {{ parent() }}
 {% endblock %}

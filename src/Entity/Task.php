@@ -26,7 +26,7 @@ class Task
      *
      * @ORM\Column(name="create_date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $createDate = 'CURRENT_TIMESTAMP';
+    private $createDate;
 
     /**
      * @var \DateTime|null

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dodawanie skrzynki{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Dodawanie skrzynki</h1>
+
+    {{ form_start(taskAddForm) }}
+        {{ form_row(taskAddForm.name) }}
+        {{ form_row(taskAddForm.description) }}
+        {{ form_row(taskAddForm.end_date) }}
+        {{ form_row(taskAddForm.complete_after_end_date) }}
+
+        <button type="submit" class="btn">Zapisz</button>
+    {{ form_end(taskAddForm) }}
+{% endblock %}

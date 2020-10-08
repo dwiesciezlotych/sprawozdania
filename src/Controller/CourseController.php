@@ -74,20 +74,7 @@ class CourseController extends AbstractController
 
         //$target = $this->getDoctrine()->getRepository(Sections::class)->findBy(["course" => $course]);
         $target = $this->getDoctrine()->getRepository(Sections::class)->findAllByCourse($course->getId());
-        dd($target);
-//        WITH RECURSIVE sub_tree AS (
-//  SELECT *
-//  FROM sections
-//  WHERE previous_section_id is null
-//    	and course_id = 2
-//
-//  UNION ALL
-//
-//  SELECT sec.*
-//  FROM sections sec, sub_tree st
-//  WHERE sec.previous_section_id = st.id
-//)
-//SELECT id, name, course_id, previous_section_id FROM sub_tree
+        //dd($target);
         
         return $this->render('course/show.html.twig', [
             'course' => $course,
