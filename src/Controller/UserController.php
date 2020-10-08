@@ -53,11 +53,11 @@ class UserController extends AbstractController
             );
             
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            //$entityManager->persist($user);
+            //$entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_user_add');
+            //return $this->redirectToRoute('app_user_add');
         }
 
         return $this->render('user/add.html.twig', [
