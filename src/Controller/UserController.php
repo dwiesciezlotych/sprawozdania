@@ -96,7 +96,7 @@ class UserController extends AbstractController
     public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getDoctrine()->getManager()->find(Users::class,$request->query->getInt('uid', -1));
-        if($user == null) return $this->redirectToRoute('app_main');
+        if($user == null) return $this->redirectToRoute('app_login');
         
         $form = $this->createFormBuilder($user)
                 ->add('password_hash', \Symfony\Component\Form\Extension\Core\Type\RepeatedType::class, [
@@ -117,13 +117,16 @@ class UserController extends AbstractController
                     $user->getPasswordHash()
                 )
             );
+            if($user->getStatus()->getName() == Statuses::STATUS_CHANGE_PASSWORD_REQUEST) {
+                $user->setStatus($this->getDoctrine()->getRepository(Statuses::class)->findOneBy(['name' => Statuses::STATUS_ACTIVE]));
+            }
             
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_user_list');
+            return $this->redirectToRoute('app_user_edit', ['uid' => $user->getId()]);
         }
 
         return $this->render('user/change_password.html.twig', [

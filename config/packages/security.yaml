@@ -45,4 +45,5 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        # - { path: ^/register, roles: ROLE_ADMINISTRATOR }
+         - { path: ^/user/add, roles: ROLE_ADMINISTRATOR }
+         - { path: ^/user/list, roles: [ROLE_ADMINISTRATOR, ROLE_MENEDŻER, ROLE_NAUCZYCIEL] }
