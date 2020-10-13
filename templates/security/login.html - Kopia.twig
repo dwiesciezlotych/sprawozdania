@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Zaloguj się!{% endblock %}
+{% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <div id="login">
+<form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
@@ -12,25 +12,18 @@
         <div class="mb-3">
             Jesteś zalogowany jako {{ app.user.username }}, <a href="{{ path('app_logout') }}">Wyloguj</a>
         </div>
-    {% else %}
-<form method="post">
     
-        <h1 class="h3 mb-3 font-weight-normal">Podaj dane logowania</h1>
-        <table id="login2">
-            <tr>
-                <th><label for="inputLogin">Login</label></th>
-                <th><input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" required autofocus></th>
-            </tr>
-            <tr>
-                <th><label for="inputPassword">Hasło</label></th>
-                <th><input type="password" name="password" id="inputPassword" class="form-control" required></th>
-            </tr>
-        </table>
+    {% else %}
+    <h1 class="h3 mb-3 font-weight-normal">Zaloguj się</h1>
+    <label for="inputLogin">Login</label>
+    <input type="text" value="{{ last_username }}" name="login" id="inputLogin" class="form-control" required autofocus>
+    <label for="inputPassword">Hasło</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" required>
 
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
-        
+
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
         See https://symfony.com/doc/current/security/remember_me.html
@@ -43,12 +36,8 @@
     #}
 
     <button class="btn btn-lg btn-primary" type="submit">
-        Zaloguj
+        Zaloguj się
     </button>
-    
-    <a id="password_reset" href="">Resetuj hasło</a>
-    
-</form>
     {% endif %}
-    </div>
+</form>
 {% endblock %}

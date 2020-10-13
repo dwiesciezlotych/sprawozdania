@@ -15,7 +15,13 @@
         <td>{#edycja#}</td>
     </thead><tbody>
 {% for row in pagination %} 
-    <tr><td>{{ row.name }}</td><td>{{ row.surname }}</td><td><a href="{{ path('app_user_edit', { 'uid': row.id }) }}">edycja</a></td></tr> 
+    <tr>
+        <td>{{ row.name }}</td>
+        <td>{{ row.surname }}</td>
+        {% if is_granted('ROLE_ADMINISTRATOR') %}
+            <td><a href="{{ path('app_user_edit', { 'uid': row.id }) }}">edycja</a></td>
+        {% endif %}
+    </tr> 
 {% endfor %} 
 </tbody></table>
 
@@ -23,6 +29,8 @@
 {{ knp_pagination_render(pagination) }} 
 </div> 
 
-<a href="{{ path('app_user_add') }}">Dodaj</a>
+{% if is_granted('ROLE_ADMINISTRATOR') %}
+    <a href="{{ path('app_user_add') }}">Dodaj</a>
+{% endif %}
 
 {% endblock %}
