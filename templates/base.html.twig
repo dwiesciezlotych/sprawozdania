@@ -8,7 +8,26 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        <nav class="nav">
+            {% block nav %}
+                <a href="{{ path('app_course_list') }}">Kursy</a>
+                {% if is_granted('ROLE_NAUCZYCIEL') %}
+                    
+                {% endif %}
+                {% if is_granted('ROLE_MENEDŻER') %}
+                    
+                {% endif %}
+                {% if is_granted('ROLE_ADMINISTRATOR') %}
+                    <a href="{{ path('app_user_list') }}">Użytkownicy</a>
+                {% endif %}
+            {% endblock %}
+        </nav>
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>
