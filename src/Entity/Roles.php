@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Roles
 {
+    const ROLE_ADMINISTRATOR = 'ROLE_ADMINISTRATOR';
+    const ROLE_MANAGER = 'ROLE_MENEDŻER';
+    const ROLE_TEACHER = 'ROLE_NAUCZYCIEL';
+    const ROLE_STUDENT = 'ROLE_STUDENT';
+    
     /**
      * @var int
      *

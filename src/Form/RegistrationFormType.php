@@ -23,15 +23,60 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, 
-                    ['label' => 'Imię'])
+                    ['label' => 'Imię',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź imię',
+                        ]),
+                        new Length([
+                            'max' => 50,
+                            'maxMessage' => 'Imię może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
             ->add('surname', TextType::class, 
-                    ['label' => 'Nazwisko'])
+                    ['label' => 'Nazwisko',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź nazwisko',
+                        ]),
+                        new Length([
+                            'max' => 50,
+                            'maxMessage' => 'Nazwisko może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
             ->add('login', TextType::class, 
-                    ['label' => 'Login'])
+                    ['label' => 'Login',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź login',
+                        ]),
+                        new Length([
+                            'max' => 30,
+                            'maxMessage' => 'Login może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
             ->add('email', EmailType::class, 
-                    ['label' => 'Email'])
+                    ['label' => 'Email',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź email',
+                        ]),
+                        new Length([
+                            'max' => 50,
+                            'maxMessage' => 'Email może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
             ->add('telephone', TelType::class, 
-                    ['label' => 'Telefon'])
+                    ['label' => 'Telefon',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź telefon',
+                        ]),
+                        new Length([
+                            'max' => 15,
+                            'maxMessage' => 'Telefon może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
             ->add('role', EntityType::class,
                     ['class' => \App\Entity\Roles::class,
                     'choice_label' => 'name',
@@ -39,7 +84,16 @@ class RegistrationFormType extends AbstractType
             ->add('birth_date', BirthdayType::class, 
                     ['label' => 'Data urodzenia'])
             ->add('password_hash', TextType::class, 
-                    ['label' => 'Hasło'])
+                    ['label' => 'Hasło',
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Wprowadź hasło',
+                        ]),
+                        new Length([
+                            'max' => 30,
+                            'maxMessage' => 'Hasło może zawierać maksymalnie {{ limit }} znaków',
+                        ]),
+                    ],])
 //            ->add('agreeTerms', CheckboxType::class, [
 //                'mapped' => false,
 //                'constraints' => [

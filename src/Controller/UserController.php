@@ -10,8 +10,10 @@ use App\Entity\Users;
 use App\Entity\Statuses;
 use App\Form\RegistrationFormType;
 use App\Form\UserEditFormType;
+use App\Form\UserEditSelfFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserController extends AbstractController
 {
@@ -56,7 +58,8 @@ class UserController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
-
+            
+            $this->addFlash('success', 'Użytkownik został dodany');
             return $this->redirectToRoute('app_user_add');
         }
 
@@ -73,7 +76,16 @@ class UserController extends AbstractController
         $user = $this->getDoctrine()->getManager()->find(Users::class,$request->query->getInt('uid', -1));
         if($user == null) return $this->redirectToRoute('app_user_list');
         
-        $form = $this->createForm(UserEditFormType::class, $user);
+        if($this->isGranted(\App\Entity\Roles::ROLE_ADMINISTRATOR)){
+            // aministrator edit user
+            $form = $this->createForm(UserEditFormType::class, $user);
+        }else if($user == $this->getUser()){
+            // self edit
+            $form = $this->createForm(UserEditSelfFormType::class, $user);
+        }else{
+            throw new AccessDeniedException();
+        }
+        
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +98,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/edit.html.twig', [
-            'registrationForm' => $form->createView(),
+            'editForm' => $form->createView(),
         ]);
     }
     
@@ -96,18 +108,23 @@ class UserController extends AbstractController
     public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getDoctrine()->getManager()->find(Users::class,$request->query->getInt('uid', -1));
-        if($user == null) return $this->redirectToRoute('app_login');
+        if($user == null) return $this->redirectToRoute('app_user_list');
         
-        $form = $this->createFormBuilder($user)
-                ->add('password_hash', \Symfony\Component\Form\Extension\Core\Type\RepeatedType::class, [
-                    'type' => \Symfony\Component\Form\Extension\Core\Type\PasswordType::class,
-                    'invalid_message' => 'Podane dane są niezgodne.',
-                    'required' => true,
-                    'first_options'  => ['label' => 'Hasło'],
-                    'second_options' => ['label' => 'Powtórz hasło'],
-                    'data' => '',
-                ])
-                ->getForm();
+        if(!$this->isGranted(\App\Entity\Roles::ROLE_ADMINISTRATOR) &&
+                $user != $this->getUser()){
+            throw new AccessDeniedException();
+        }
+        $form = $this->createForm(UserChangePasswordFormType::class,$user);
+//        $form = $this->createFormBuilder($user)
+//                ->add('password_hash', \Symfony\Component\Form\Extension\Core\Type\RepeatedType::class, [
+//                    'type' => \Symfony\Component\Form\Extension\Core\Type\PasswordType::class,
+//                    'invalid_message' => 'Podane dane są niezgodne.',
+//                    'required' => true,
+//                    'first_options'  => ['label' => 'Hasło'],
+//                    'second_options' => ['label' => 'Powtórz hasło'],
+//                    'data' => '',
+//                ])
+//                ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

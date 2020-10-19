@@ -1,25 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Edytuj dane{% endblock %}
 
 {% block body %}
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <h1>Edytuj dane</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.surname) }}
-        {{ form_row(registrationForm.login) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.telephone) }}
-        {{ form_row(registrationForm.role) }}
-        {{ form_row(registrationForm.birth_date) }}
-        {#{{ form_row(registrationForm.plainPassword) }}#}
-        {#{{ form_row(registrationForm.agreeTerms) }}#}
+    {{ form_start(editForm) }}
+        {{ form_row(editForm.name) }}
+        {{ form_row(editForm.surname) }}
+        {%if editForm.login is defined %}{{ form_row(editForm.login) }}{% endif %}
+        {{ form_row(editForm.email) }}
+        {{ form_row(editForm.telephone) }}
+        {%if editForm.role is defined %}{{ form_row(editForm.role) }}{% endif %}
+        {{ form_row(editForm.birth_date) }}
+        {#{{ form_row(editForm.plainPassword) }}#}
+        {#{{ form_row(editForm.agreeTerms) }}#}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        <button type="submit" class="btn">Zapisz</button>
+        <a href="{{ path('app_user_change_password', { 'uid': app.user.id }) }}">Zmień hasło</a>
+    {{ form_end(editForm) }}
 {% endblock %}

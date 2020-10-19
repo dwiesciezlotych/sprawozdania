@@ -46,4 +46,5 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
          - { path: ^/user/add, roles: ROLE_ADMINISTRATOR }
+         - { path: ^/user/edit, roles: IS_AUTHENTICATED_REMEMBERED }
          - { path: ^/user/list, roles: [ROLE_ADMINISTRATOR, ROLE_MENEDŻER, ROLE_NAUCZYCIEL] }

@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserEditFormType extends AbstractType
+class UserEditSelfFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,7 +32,8 @@ class UserEditFormType extends AbstractType
                             'max' => 50,
                             'maxMessage' => 'Imię może zawierać maksymalnie {{ limit }} znaków',
                         ]),
-                    ],])
+                    ],
+                    'disabled' => true,])
             ->add('surname', TextType::class, 
                     ['label' => 'Nazwisko',
                     'constraints' => [
@@ -43,18 +44,8 @@ class UserEditFormType extends AbstractType
                             'max' => 50,
                             'maxMessage' => 'Nazwisko może zawierać maksymalnie {{ limit }} znaków',
                         ]),
-                    ],])
-            ->add('login', TextType::class, 
-                    ['label' => 'Login',
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Wprowadź login',
-                        ]),
-                        new Length([
-                            'max' => 30,
-                            'maxMessage' => 'Login może zawierać maksymalnie {{ limit }} znaków',
-                        ]),
-                    ],])
+                    ],
+                    'disabled' => true,])
             ->add('email', EmailType::class, 
                     ['label' => 'Email',
                     'constraints' => [
@@ -77,12 +68,9 @@ class UserEditFormType extends AbstractType
                             'maxMessage' => 'Telefon może zawierać maksymalnie {{ limit }} znaków',
                         ]),
                     ],])
-            ->add('role', EntityType::class,
-                    ['class' => \App\Entity\Roles::class,
-                    'choice_label' => 'name',
-                    'label' => 'Rola'])
             ->add('birth_date', BirthdayType::class, 
-                    ['label' => 'Data urodzenia'])
+                    ['label' => 'Data urodzenia',
+                    'disabled' => true,])
         ;
     }
 
