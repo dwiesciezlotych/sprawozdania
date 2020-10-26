@@ -21,12 +21,15 @@
 <a href="{{ path('app_section_add',{ 'cid': course.id }) }}">Dodaj sekcje</a>
 
 {% for row in pagination %} 
-    <div style="color: red;">{{ row.name }} 
+    <div style="color: red;">
+        {{ row.name }} 
         <select onchange="location = this.value;">
             <option value="" disabled selected hidden>Dodaj</option>
             <option value="{{ path('app_task_add',{ 'sid': row.id }) }}">Skrzynkę</option>
             <option value="{#{{ path('app_material_add',{ 'cid': course.id }) }}#}">Materiały</option>
         </select>
+        {#<a href="{{ path('app_section_move',{ 'sid': row.id, 'method': 'up' }) }}">/\</a>
+        <a href="{{ path('app_section_move',{ 'sid': row.id, 'method': 'down' }) }}">\/</a>#}
     </div>
 {% endfor %} 
 

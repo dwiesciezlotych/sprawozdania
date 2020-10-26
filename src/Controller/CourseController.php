@@ -74,7 +74,6 @@ class CourseController extends AbstractController
 
         //$target = $this->getDoctrine()->getRepository(Sections::class)->findBy(["course" => $course]);
         $target = $this->getDoctrine()->getRepository(Sections::class)->findAllByCourse($course->getId());
-        //dd($target);
         
         return $this->render('course/show.html.twig', [
             'course' => $course,
@@ -98,7 +97,9 @@ class CourseController extends AbstractController
             ->getForm();
         
         $section->setCourse($course);
-        $section->setPreviousSection(null);
+        $section->setPreviousSection(
+                $this->getDoctrine()->getRepository(Sections::class)->findLastInCourse(
+                                $course->getId()));
         
         $form->handleRequest($request);
 
@@ -113,5 +114,78 @@ class CourseController extends AbstractController
         return $this->render('course/sectionAdd.html.twig', [
             'sectionAddForm' => $form->createView(),
         ]);
+    }
+    
+    /**
+     * @Route("/section/move", name="app_section_move")
+     */
+    public function sectionMove(Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $section = $entityManager->find(Sections::class,$request->query->getInt('sid', -1));
+        $method = $request->query->get('method', null);
+        
+        if($section != null){
+            switch($method){
+                case 'up':
+                    $previousSection = $section->getPreviousSection();
+                    if(true){//$previousSection != null){
+//                        $section->setPreviousSection(null);
+//                        $previousSection->setPreviousSection(null);
+//                        $entityManager->flush();
+//                        $section->setPreviousSection($previousSection->getPreviousSection());
+//                        $previousSection->setPreviousSection($section);
+//                        $entityManager->persist($section);
+//                        $entityManager->persist($previousSection);
+//                        $args = [$section->getId() => ['previous_section_id' => $previousSection->getPreviousSection()->getId()],
+//                                $previousSection->getId() => ['previous_section_id' => $section->getId()]];
+                        
+                        
+                        
+//                        $args = [$section->getId() => $previousSection->getPreviousSection()->getId(),
+//                                $previousSection->getId() => $section->getId()];
+                        $args = [3 => 1,
+                                2 => 3];
+                        
+                        $nextSection = $this->getDoctrine()->getRepository(Sections::class)->findOneBy(['previousSection' => $section->getId()]);
+                        if(true){//$nextSection != null){
+//                            $nextSection->setPreviousSection($previousSection);
+//                            $entityManager->persist($nextSection);
+                            
+                            //$args += [$nextSection->getId() => ['previous_section_id' => $previousSection->getId()]];
+                            //
+                            //
+//                            $args += [$nextSection->getId() => $previousSection->getId()];
+                            $args += [4 => 2];
+                            
+                        }
+                        $this->getDoctrine()->getRepository(Sections::class)->updateManyRowsInOneColumn('previous_section_id',$args);
+//                        $entityManager->flush();
+                    }
+                    break;
+                case 'down':
+                    $nextSection = $this->getDoctrine()->getRepository(Sections::class)->findOneBy(['previousSection' => $section->getId()]);
+                    if($nextSection != null){
+                        $nextSection->setPreviousSection($section->getPreviousSection());
+                        $section->setPreviousSection($nextSection);
+//                        $entityManager->persist($nextSection);
+//                        $entityManager->persist($section);
+                        $next2Section = $this->getDoctrine()->getRepository(Sections::class)->findOneBy(['previousSection' => $nextSection->getId()]);
+                        if($next2Section != null){
+                            $next2Section->setPreviousSection($section);
+//                            $entityManager->persist($next2Section);
+                        }
+                        $entityManager->flush();
+                    }
+                    
+                    break;
+            }
+
+        }
+        return $this->render('base.html.twig');
+        //return $this->redirectToRoute('app_course_show',['cid' => $section->getCourse()->getId()]);
+//        return $this->render('course/sectionAdd.html.twig', [
+//            'sectionAddForm' => $form->createView(),
+//        ]);
     }
 }
