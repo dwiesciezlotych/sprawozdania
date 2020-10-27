@@ -31,7 +31,8 @@ class CourseController extends AbstractController
 
         // 2 sposob
         $newCategory = (new Categories())->setName("Inne")->setId(-1)->setCourses(new ArrayCollection($coursesRepository->findBy(['category' => null])));
-        $target = array_merge([$newCategory], $categoriesRepository->findAll());
+//        $target = array_merge([$newCategory], $categoriesRepository->findAll());
+        $target = array_merge($categoriesRepository->findBy([],['name' => 'ASC']),[$newCategory]);
         
         return $this->render('course/list.html.twig', [
             'pagination' => $paginator->paginate(
@@ -47,6 +48,31 @@ class CourseController extends AbstractController
     public function add(Request $request): Response
     {
         $course = new Courses();
+        $form = $this->createForm(CourseAddFormType::class, $course);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($course);
+            $entityManager->flush();
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('app_course_list');
+        }
+
+        return $this->render('course/add.html.twig', [
+            'courseAddForm' => $form->createView(),
+        ]);
+    }
+    
+    /**
+     * @Route("/course/edit", name="app_course_edit")
+     */
+    public function edit(Request $request): Response
+    {
+        $course = $this->getDoctrine()->getManager()->find(Courses::class,$request->query->getInt('cid', -1));
+        if($course == null) return $this->redirectToRoute('app_course_list');
+        
         $form = $this->createForm(CourseAddFormType::class, $course);
         $form->handleRequest($request);
 

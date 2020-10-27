@@ -8,7 +8,15 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-<h1>Lista kursów</h1>   
+<h1>Lista kursów</h1>  
+{% if is_granted('ROLE_MENEDŻER') %}
+<select onchange="location = this.value;">
+    <option value="" disabled selected hidden>Dodaj</option>
+    <option value="{{ path('app_course_add') }}">Kurs</option>
+    <option value="{{ path('app_category_add') }}">Kategorię</option>
+</select>
+{% endif %}
+
 
 {# 1 sposob #}
 {#{% for row in pagination %} 
@@ -26,10 +34,19 @@
 
 {# 2 sposob #}
 {% for row in pagination %} 
-    <div style="color: red;">{{ row.name }} <input type="button" value="\/" onclick="courseVisible( {{ row.id }} );" /></div>
+    <div style="color: red;">
+        {{ row.name }} 
+        {% if row.courses is not empty %}
+        <input type="button" value="\/" onclick="courseVisible( {{ row.id }} );" />
+        {% endif %}
+        {% if row.id > 0 and is_granted('ROLE_MENEDŻER') %}
+        <a href="{{ path('app_category_edit', { 'catid': row.id }) }}">edytuj</a>
+        {% endif %}
+    </div>
     <div id="categoryCourse_{{ row.id }}" style="display: none">
     {% for course in row.courses %}
-        <a href="{{ path('app_course_show', { 'cid': course.id }) }}"><div style="color: blue;">{{ course.name }}</div></a>
+        <a href="{{ path('app_course_show', { 'cid': course.id }) }}">
+            <div style="color: blue;">{{ course.name }}</div></a>
     {% endfor %}
     </div>
 {% endfor %} 

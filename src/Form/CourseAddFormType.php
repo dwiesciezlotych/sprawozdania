@@ -18,8 +18,10 @@ class CourseAddFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('description', TextType::class)
-            ->add('password', TextType::class)
+            ->add('description', TextType::class,[
+                    'required' => false])
+            ->add('password', TextType::class,[
+                    'required' => false])
             ->add('category', EntityType::class,
                     ['class' => \App\Entity\Categories::class,
                     'choice_label' => 'name',

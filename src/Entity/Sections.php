@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="sections", uniqueConstraints={@ORM\UniqueConstraint(name="previous_section_id_uq", columns={"previous_section_id"})}, indexes={@ORM\Index(name="previous_section_id", columns={"previous_section_id"}), @ORM\Index(name="course_id", columns={"course_id"})})
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="App\Repository\SectionsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SectionRepository")
  */
 class Sections
 {

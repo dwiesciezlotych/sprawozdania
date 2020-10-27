@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
  * @method Sections[]    findAll()
  * @method Sections[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SectionsRepository extends ServiceEntityRepository
+class SectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
